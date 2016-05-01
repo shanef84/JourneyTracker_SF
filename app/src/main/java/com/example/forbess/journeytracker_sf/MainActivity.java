@@ -8,8 +8,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -20,9 +18,6 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         context = getApplicationContext();
         activity = this;
+        final CustomView customView = (CustomView) findViewById(R.id.customview);
         tracker = new float[size];
         gps = (TextView) findViewById(R.id.gps);
         speed = (TextView) findViewById(R.id.speed);
