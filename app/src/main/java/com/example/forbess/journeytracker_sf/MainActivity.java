@@ -28,8 +28,8 @@ public class MainActivity extends AppCompatActivity {
     private Activity activity;
     private LocationManager lm;
     private int time,  index = 0;
-    private final int size = 30;
-    private float tracker[];
+    private static int size = 30;
+    public static float tracker[];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         context = getApplicationContext();
         activity = this;
-        final CustomView customView = (CustomView) findViewById(R.id.customview);
+
         tracker = new float[size];
         gps = (TextView) findViewById(R.id.gps);
         speed = (TextView) findViewById(R.id.speed);
@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addLocationListener (){
+        final CustomView customView = (CustomView) findViewById(R.id.customview);
         lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                      average.setText("Average Speed: " + getAverage() + " km/h");
                      overall.setText("Overall Time: " + time + "s");
                 }
+                customView.invalidate();
             }
 
             @Override
@@ -107,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
                             average.setText("Average Speed: " + getAverage() + " km/h");
                             overall.setText("Overall Time: " + time + "s");
                         }
+                        customView.invalidate();
                     }
                 }
             }
@@ -133,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
                             average.setText("Average Speed: " + getAverage() + " km/h");
                             overall.setText("Overall Time: " + time + "s");
                         }
+                        customView.invalidate();
                     }
                 }
             }
@@ -149,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public float getAverage(){
+    public static float getAverage(){
         float avg = 0;
         for (int i = 0; i < size; i++){
             avg += tracker[i];

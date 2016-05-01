@@ -17,6 +17,7 @@ public class CustomView extends View {
     private int cellWidth, cellHeight, index;
     private Paint white, red, green;
     private float average;
+
     public CustomView(Context context) {
         super(context);
         init();
@@ -75,7 +76,7 @@ public class CustomView extends View {
         for (int i = 0; i < boardH; i=i+10) {
             canvas.drawLine(0, i * (getHeight() / boardH), getWidth(), i * (getHeight() / boardH), white);
         }
-
+        average = boardH - MainActivity.getAverage();
         canvas.drawLine(0, average * (getHeight() / boardH), getWidth(), average * (getHeight() / boardH), red);
 
     }
