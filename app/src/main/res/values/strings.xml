@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">JourneyTracker_SF</string>
+    <string name="action_settings">Settings</string>
+    <string name="GPS">GPS: inactive</string>
+    <string name="speed">Current Speed: N/A</string>
+    <string name="average">Average Speed: N/A</string>
+    <string name="overall">Overall Time: 0s</string>
+    <string name="start">Start Tracking</string>
+    <string name="stop">Stop Tracking</string>
+</resources>
