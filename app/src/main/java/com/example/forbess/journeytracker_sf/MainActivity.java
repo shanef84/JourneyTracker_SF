@@ -74,17 +74,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onLocationChanged(Location location) {
                  if (index < 30) {
-                    tracker[index] = location.getSpeed();
+                    tracker[index] = location.getSpeed()*3600/1000;
                      index++;time++;
-                     speed.setText("Current Speed: " + location.getSpeed() + " km/h");
+                     speed.setText("Current Speed: " + location.getSpeed()*3600/1000 + " km/h");
                      average.setText("Average Speed: " + getAverage() + " km/h");
                      overall.setText("Overall Time: " + time + "s");
                 }
                 else {
                      index = 0;
-                     tracker[index] = location.getSpeed();
+                     tracker[index] = location.getSpeed()*3600/1000;
                      index++;time++;
-                     speed.setText("Current Speed: " + location.getSpeed() + " km/h");
+                     speed.setText("Current Speed: " + location.getSpeed()*3600/1000 + " km/h");
                      average.setText("Average Speed: " + getAverage() + " km/h");
                      overall.setText("Overall Time: " + time + "s");
                 }
@@ -97,17 +97,17 @@ public class MainActivity extends AppCompatActivity {
                     Location l = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                     if (l != null){
                         if (index < 30) {
-                            tracker[index] = l.getSpeed();
+                            tracker[index] = l.getSpeed()*3600/1000;
                             index++;time++;
-                            speed.setText("Current Speed: " + l.getSpeed() + " km/h");
+                            speed.setText("Current Speed: " + l.getSpeed()*3600/1000 + " km/h");
                             average.setText("Average Speed: " + getAverage() + " km/h");
                             overall.setText("Overall Time: " + time + "s");
                         }
                         else {
                             index = 0;
-                            tracker[index] = l.getSpeed();
+                            tracker[index] = l.getSpeed()*3600/1000;
                             index++;time++;
-                            speed.setText("Current Speed: " + l.getSpeed() + " km/h");
+                            speed.setText("Current Speed: " + l.getSpeed()*3600/1000 + " km/h");
                             average.setText("Average Speed: " + getAverage() + " km/h");
                             overall.setText("Overall Time: " + time + "s");
                         }
@@ -122,18 +122,18 @@ public class MainActivity extends AppCompatActivity {
                     Location l = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                     if (l != null) {
                         if (index < 30) {
-                            tracker[index] = l.getSpeed();
+                            tracker[index] = l.getSpeed()*3600/1000;
                             index++;
                             time++;
-                            speed.setText("Current Speed: " + l.getSpeed() + " km/h");
+                            speed.setText("Current Speed: " + l.getSpeed()*3600/1000 + " km/h");
                             average.setText("Average Speed: " + getAverage() + " km/h");
                             overall.setText("Overall Time: " + time + "s");
                         } else {
                             index = 0;
-                            tracker[index] = l.getSpeed();
+                            tracker[index] = l.getSpeed()*3600/1000;
                             index++;
                             time++;
-                            speed.setText("Current Speed: " + l.getSpeed() + " km/h");
+                            speed.setText("Current Speed: " + l.getSpeed()*3600/1000 + " km/h");
                             average.setText("Average Speed: " + getAverage() + " km/h");
                             overall.setText("Overall Time: " + time + "s");
                         }
