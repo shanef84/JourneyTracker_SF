@@ -21,6 +21,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     // private fields of the class
@@ -29,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
     private Context context;
     private Activity activity;
     private LocationManager lm;
+    private int time,  index = 0;
+    private final int size = 30;
+    private float tracker[];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         context = getApplicationContext();
         activity = this;
+        tracker = new float[size];
         gps = (TextView) findViewById(R.id.gps);
         speed = (TextView) findViewById(R.id.speed);
         average = (TextView) findViewById(R.id.average);
@@ -60,56 +67,82 @@ public class MainActivity extends AppCompatActivity {
                     }
             }
         });
-        checkPermission();
-        if (!checkPermission()){
-            requestPermission();
-        }
-        addLocationListener();
     }
 
     public void addLocationListener (){
-        checkPermission();
-        if (!checkPermission()){
-            requestPermission();
-        }
         lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                checkPermission();
-                if (!checkPermission()){
-                    requestPermission();
+                 if (index < 30) {
+                    tracker[index] = location.getSpeed();
+                     index++;time++;
+                     speed.setText("Current Speed: " + location.getSpeed() + " km/h");
+                     average.setText("Average Speed: " + getAverage() + " km/h");
+                     overall.setText("Overall Time: " + time + "s");
                 }
-                speed.setText("Current Speed: " + location.getSpeed());
+                else {
+                     index = 0;
+                     tracker[index] = location.getSpeed();
+                     index++;time++;
+                     speed.setText("Current Speed: " + location.getSpeed() + " km/h");
+                     average.setText("Average Speed: " + getAverage() + " km/h");
+                     overall.setText("Overall Time: " + time + "s");
+                }
             }
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
-                checkPermission();
-                if (!checkPermission()){
-                    requestPermission();
+                if (provider == LocationManager.GPS_PROVIDER){
+                    checkPermission();
+                    Location l = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    if (l != null){
+                        if (index < 30) {
+                            tracker[index] = l.getSpeed();
+                            index++;time++;
+                            speed.setText("Current Speed: " + l.getSpeed() + " km/h");
+                            average.setText("Average Speed: " + getAverage() + " km/h");
+                            overall.setText("Overall Time: " + time + "s");
+                        }
+                        else {
+                            index = 0;
+                            tracker[index] = l.getSpeed();
+                            index++;time++;
+                            speed.setText("Current Speed: " + l.getSpeed() + " km/h");
+                            average.setText("Average Speed: " + getAverage() + " km/h");
+                            overall.setText("Overall Time: " + time + "s");
+                        }
+                    }
                 }
             }
 
             @Override
             public void onProviderEnabled(String provider) {
-                checkPermission();
-                if (!checkPermission()){
-                    requestPermission();
-                }
-                if (provider == LocationManager.GPS_PROVIDER){
+               if (provider == LocationManager.GPS_PROVIDER){
+                   checkPermission();
                     Location l = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    if (l != null){
-                        speed.setText("Current Speed: " + l.getSpeed());
+                    if (l != null) {
+                        if (index < 30) {
+                            tracker[index] = l.getSpeed();
+                            index++;
+                            time++;
+                            speed.setText("Current Speed: " + l.getSpeed() + " km/h");
+                            average.setText("Average Speed: " + getAverage() + " km/h");
+                            overall.setText("Overall Time: " + time + "s");
+                        } else {
+                            index = 0;
+                            tracker[index] = l.getSpeed();
+                            index++;
+                            time++;
+                            speed.setText("Current Speed: " + l.getSpeed() + " km/h");
+                            average.setText("Average Speed: " + getAverage() + " km/h");
+                            overall.setText("Overall Time: " + time + "s");
+                        }
                     }
                 }
             }
 
             @Override
             public void onProviderDisabled(String provider) {
-                checkPermission();
-                if (!checkPermission()){
-                    requestPermission();
-                }
                 if (provider == LocationManager.GPS_PROVIDER){
                     gps.setText(R.string.GPS);
                     speed.setText(R.string.speed);
@@ -118,6 +151,15 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public float getAverage(){
+        float avg = 0;
+        for (int i = 0; i < size; i++){
+            avg += tracker[i];
+        }
+        avg = avg / size;
+        return avg;
     }
 
     @Override
@@ -147,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean checkPermission(){
         int result = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION);
         if (result == PackageManager.PERMISSION_GRANTED){
-
+            addLocationListener();
             return true;
 
         } else {
@@ -168,4 +210,20 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(activity,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},PERMISSION_REQUEST_CODE);
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                  addLocationListener();
+
+                } else {
+
+                }
+                break;
+        }
+    }
+
 }
