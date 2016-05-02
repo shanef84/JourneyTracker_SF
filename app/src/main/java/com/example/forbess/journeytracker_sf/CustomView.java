@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -62,6 +63,7 @@ public class CustomView extends View {
         white = new Paint(Paint.ANTI_ALIAS_FLAG); white.setColor(Color.WHITE);white.setStrokeWidth(2);
         red = new Paint(Paint.ANTI_ALIAS_FLAG); red.setColor(Color.RED);red.setStrokeWidth(2);
         green = new Paint(Paint.ANTI_ALIAS_FLAG); green.setColor(Color.GREEN);green.setStrokeWidth(2);
+        green.setStyle(Paint.Style.STROKE); green.setAntiAlias(true);green.setShadowLayer(4, 2, 2, 0x80000000);
 
 
     }
@@ -78,6 +80,27 @@ public class CustomView extends View {
         }
         average = boardH - MainActivity.getAverage();
         canvas.drawLine(0, average * (getHeight() / boardH), getWidth(), average * (getHeight() / boardH), red);
+        Path path = new Path();
+        path.moveTo(getX(0f, boardW), getY(0f, boardH));
 
+        for (int i = 0; i < boardW; i++){
+            path.lineTo(getX(i, boardW), getY(MainActivity.tracker[i], boardH));
+        }
+        canvas.drawPath(path, green);
     }
+
+    private float getY(float value, float max){
+        float height = getHeight() - getPaddingTop() - getPaddingBottom();
+        value = (value / boardH) * height;
+        value = height - value;
+        value += getPaddingTop();
+        return value;
+    }
+
+    private float getX(float value, float max){
+        float width = getWidth() - getPaddingLeft() - getPaddingRight();
+        value = (value / boardW) * width;
+        return value;
+    }
+
 }
