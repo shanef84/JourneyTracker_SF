@@ -61,8 +61,8 @@ public class CustomView extends View {
 
         //set colors
         white = new Paint(Paint.ANTI_ALIAS_FLAG); white.setColor(Color.WHITE);white.setStrokeWidth(2);
-        red = new Paint(Paint.ANTI_ALIAS_FLAG); red.setColor(Color.RED);red.setStrokeWidth(2);
-        green = new Paint(Paint.ANTI_ALIAS_FLAG); green.setColor(Color.GREEN);green.setStrokeWidth(2);
+        red = new Paint(Paint.ANTI_ALIAS_FLAG); red.setColor(Color.RED);red.setStrokeWidth(3);
+        green = new Paint(Paint.ANTI_ALIAS_FLAG); green.setColor(Color.GREEN);green.setStrokeWidth(3);
         green.setStyle(Paint.Style.STROKE); green.setAntiAlias(true);green.setShadowLayer(4, 2, 2, 0x80000000);
 
 
@@ -91,15 +91,14 @@ public class CustomView extends View {
 
     private float getY(float value, float max){
         float height = getHeight() - getPaddingTop() - getPaddingBottom();
-        value = (value / boardH) * height;
+        value = (value / max) * height;
         value = height - value;
-        value += getPaddingTop();
         return value;
     }
 
     private float getX(float value, float max){
         float width = getWidth() - getPaddingLeft() - getPaddingRight();
-        value = (value / boardW) * width;
+        value = (value / max) * width;
         return value;
     }
 

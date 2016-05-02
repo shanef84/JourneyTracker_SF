@@ -27,9 +27,11 @@ public class MainActivity extends AppCompatActivity {
     private Context context;
     private Activity activity;
     private LocationManager lm;
+    private LocationListener ls;
     private int time,  index = 0;
     private static int size = 30;
     public static float tracker[];
+    public boolean Track = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
         activity = this;
 
         tracker = new float[size];
+        for (int i =0; i < size; i++){
+            tracker[i]=0;
+        }
         gps = (TextView) findViewById(R.id.gps);
         speed = (TextView) findViewById(R.id.speed);
         average = (TextView) findViewById(R.id.average);
@@ -57,35 +62,45 @@ public class MainActivity extends AppCompatActivity {
                     if (button.getText().toString().equals("Start Tracking")) {
                         button.setText("Stop Tracking");
                         gps.setText("GPS: Active");
+                        Track = true;
                     } else if (button.getText().toString().equals("Stop Tracking")) {
                         button.setText("Start Tracking");
                         gps.setText("GPS: Inactive");
+                        Track = false;
                     }
             }
         });
     }
 
+
+
     public void addLocationListener (){
         final CustomView customView = (CustomView) findViewById(R.id.customview);
-        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, new LocationListener() {
+        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 100, ls = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                 if (index < 30) {
-                    tracker[index] = location.getSpeed()*3600/1000;
-                     index++;time++;
-                     speed.setText("Current Speed: " + location.getSpeed()*3600/1000 + " km/h");
-                     average.setText("Average Speed: " + getAverage() + " km/h");
-                     overall.setText("Overall Time: " + time + "s");
+                if (Track){
+                     if (index < size) {
+                        tracker[index] = location.getSpeed()*3600/1000;
+                         speed.setText("Current Speed: " + location.getSpeed()*3600/1000 + " km/h");
+                         average.setText("Average Speed: " + getAverage() + " km/h");
+                         overall.setText("Overall Time: " + time + "s");
+                         index++;time++;
+                    }
+                    else {
+                         index = 0;
+                    }
+                    customView.invalidate();
+                } else{
+                    for (int i =0; i < size; i++){
+                        tracker[i]=0;
+                    }
+                    index=0;time=0;
+                    speed.setText("Current Speed: N/A" );
+                    average.setText("Average Speed: N/A");
+                    overall.setText("Overall Time: 0s");
+                    customView.invalidate();
                 }
-                else {
-                     index = 0;
-                     tracker[index] = location.getSpeed()*3600/1000;
-                     index++;time++;
-                     speed.setText("Current Speed: " + location.getSpeed()*3600/1000 + " km/h");
-                     average.setText("Average Speed: " + getAverage() + " km/h");
-                     overall.setText("Overall Time: " + time + "s");
-                }
-                customView.invalidate();
             }
 
             @Override
