@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void addLocationListener (){
         final CustomView customView = (CustomView) findViewById(R.id.customview);
-        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 100, ls = new LocationListener() {
+        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 5, ls = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 if (Track){
